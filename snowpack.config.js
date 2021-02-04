@@ -1,5 +1,6 @@
 module.exports = {
     mount: {
-        'src': '/'
+        'public': '/',
+        'src': '/dist'
     }
 }
