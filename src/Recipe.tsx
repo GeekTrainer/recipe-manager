@@ -1,14 +1,18 @@
 import React from 'react';
+import { RecipeProps } from './props'
 
-interface RecipeProps {
-    title: string,
-    description: string,
-    steps: Array<string>,
-}
-
-function Recipe({title, description, steps}: RecipeProps) {
+function Recipe({title, description, steps, stepClick}: RecipeProps) {
     const stepDisplay = 
-        steps.map(step => <li>{step}</li>);
+        steps.map(
+            (step, index) =>
+                <li
+                    key={index}
+                    onClick={() => stepClick(index)}
+                    className={ step.completed ? 'line-through' : '' }
+                >
+                    {step.text}
+                </li>
+        );
     return (
         <section>
             <h2>{ title }</h2>
