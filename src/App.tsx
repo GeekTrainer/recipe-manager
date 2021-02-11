@@ -1,28 +1,32 @@
 import React, { useState } from 'react';
 import RecipeList from './RecipeList';
 import Recipe from './Recipe';
-import { title } from 'process';
+import { RecipeInfo } from './props'
 
 function App() {
-    const mashedPotatoesRecipe = {
+    const mashedPotatoesRecipe: RecipeInfo = {
         title: 'Stateful mashed potatoes',
         description: 'They are potatoes that are mashed',
         steps: [
-            'Cut potatoes',
-            'Boil potatoes',
-            'Mash potatoes'
+            {text: 'Cut potatoes', completed: false},
+            {text: 'Boil potatoes', completed: false},
+            {text: 'Mash potatoes', completed: false}
         ]
     };
 
-    const [recipe, setRecipe] = useState(mashedPotatoesRecipe);
+    // TODO: Figure out why the generic isn't working
+    const [recipe, setRecipe] = useState<RecipeInfo>(mashedPotatoesRecipe);
 
-    // Setting up state
-    // Loading data
+    function toggleStepCompletion(index: number) {
+        const tempRecipe: RecipeInfo = {...recipe};
+        tempRecipe.steps[index].completed = !tempRecipe.steps[index].completed;
+        setRecipe(tempRecipe);
+    }
 
     return (
         // <RecipeList />
         <section>
-            <Recipe {...recipe} />
+            <Recipe {...recipe} stepClick={toggleStepCompletion} />
         </section>
     )
 }
