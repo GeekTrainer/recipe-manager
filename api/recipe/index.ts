@@ -20,7 +20,12 @@ interface RecipeDocument extends RecipeInfo, Mongoose.Document {}
 const RecipeModel =
     Mongoose.model<RecipeDocument>('recipe', recipeSchema);
 
-Mongoose.connect(process.env.MONGO_DB);
+Mongoose.connect(
+    process.env.MONGO_DB,
+    {
+        useNewUrlParser:true
+    }
+);
 
 const recipeFunction: AzureFunction = async function (context: Context, req: HttpRequest): Promise<void> {
     let recipe = await RecipeModel.findOne({});
