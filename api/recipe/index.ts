@@ -23,19 +23,22 @@ const RecipeModel =
 Mongoose.connect(process.env.MONGO_DB);
 
 const recipeFunction: AzureFunction = async function (context: Context, req: HttpRequest): Promise<void> {
-    // await RecipeModel.create({
-    //     title: 'Stateful mashed potatoes',
-    //     description: 'They are potatoes that are mashed',
-    //     steps: [
-    //         {text: 'Cut potatoes', completed: false},
-    //         {text: 'Boil potatoes', completed: false},
-    //         {text: 'Mash potatoes', completed: false}
-    //     ]
-    // });
+    let recipe = await RecipeModel.findOne({});
+
+    if(!recipe) {
+        recipe = await RecipeModel.create({
+            title: 'Stateful mashed potatoes',
+            description: 'They are potatoes that are mashed',
+            steps: [
+                {text: 'Cut potatoes', completed: false},
+                {text: 'Boil potatoes', completed: false},
+                {text: 'Mash potatoes', completed: false}
+            ]
+        });    
+    }
 
     context.log('Returning sample recipe');
 
-    const recipe = await RecipeModel.findOne({});
 
     context.res = {
         // status: 200, /* Defaults to 200 */
