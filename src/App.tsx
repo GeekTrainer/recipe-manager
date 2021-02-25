@@ -1,24 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import RecipeList from './RecipeList';
 import Recipe from './Recipe';
-import { RecipeInfo } from './props'
+import { RecipeInfo } from '../interfaces/shared';
+import * as Store from './Store';
 
 function App() {
-    const mashedPotatoesRecipe: RecipeInfo = {
-        title: 'Stateful mashed potatoes',
-        description: 'They are potatoes that are mashed',
-        steps: [
-            {text: 'Cut potatoes', completed: false},
-            {text: 'Boil potatoes', completed: false},
-            {text: 'Mash potatoes', completed: false}
-        ]
-    };
+    const [recipe, setRecipe] = useState<RecipeInfo>({});
 
-    // TODO: Figure out why the generic isn't working
-    const [recipe, setRecipe] = useState<RecipeInfo>(mashedPotatoesRecipe);
+    useEffect(
+        async () => { // function
+            const recipe = await Store.loadRecipe();
+            setRecipe({ ...recipe });
+        },
+        [] // dependency - no dependency - run on load only
+    )
+
 
     function toggleStepCompletion(index: number) {
-        const tempRecipe: RecipeInfo = {...recipe};
+        const tempRecipe: RecipeInfo = { ...recipe };
         tempRecipe.steps[index].completed = !tempRecipe.steps[index].completed;
         setRecipe(tempRecipe);
     }

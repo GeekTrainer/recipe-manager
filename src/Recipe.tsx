@@ -1,7 +1,13 @@
 import React from 'react';
-import { RecipeProps } from './props'
+import { RecipeProps } from '../interfaces/shared'
 
 function Recipe({title, description, steps, stepClick}: RecipeProps) {
+    if (!title) {
+        return (
+            <div></div>
+        )
+    }
+
     const stepDisplay = 
         steps.map(
             (step, index) =>
